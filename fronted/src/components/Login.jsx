@@ -6,14 +6,14 @@ import { useNavigate } from "react-router-dom";
 import API from "../services/api";
 import { AuthContext } from "../context/AuthContext";
 
-// ================= VALIDATION SCHEMA =================
+//  Validation
 const schema = yup.object({
   email: yup.string().email("Invalid email").required("Email required"),
   password: yup.string().min(4, "Min 4 chars").required("Password required"),
 });
 
 export default function Login() {
-  // ================= HOOK FORM =================
+  //  Hook Form
   const {
     register,
     handleSubmit,
@@ -22,17 +22,14 @@ export default function Login() {
     resolver: yupResolver(schema),
   });
 
-  // ================= STATE =================
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  // ================= CONTEXT =================
+  //  Context
   const { login } = useContext(AuthContext);
 
-  // ================= NAVIGATION =================
   const navigate = useNavigate();
 
-  // ================= SUBMIT FUNCTION =================
   const onSubmit = async (data) => {
     try {
       setLoading(true);
@@ -52,7 +49,6 @@ export default function Login() {
     }
   };
 
-  // ================= UI =================
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-500 to-purple-600">
       <div className="bg-white p-8 rounded-2xl shadow-xl w-96">
@@ -61,7 +57,6 @@ export default function Login() {
         </h1>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          {/* EMAIL */}
           <div>
             <input
               type="email"
@@ -72,7 +67,6 @@ export default function Login() {
             <p className="text-red-500 text-sm">{errors.email?.message}</p>
           </div>
 
-          {/* PASSWORD */}
           <div>
             <input
               type="password"
@@ -83,10 +77,8 @@ export default function Login() {
             <p className="text-red-500 text-sm">{errors.password?.message}</p>
           </div>
 
-          {/* ERROR MESSAGE */}
           {error && <p className="text-red-600 text-sm text-center">{error}</p>}
 
-          {/* BUTTON */}
           <button
             type="submit"
             disabled={loading}

@@ -40,7 +40,6 @@ export default function Dashboard() {
 
   return (
     <div className="p-6">
-      {/* HEADER */}
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold">Villa Dashboard</h1>
 
@@ -61,15 +60,12 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {/* ERROR */}
       {error && <p className="text-red-500 text-center mb-4">{error}</p>}
 
-      {/* EMPTY STATE */}
       {villas.length === 0 && (
         <p className="text-center text-gray-500">No villas found. Add one!</p>
       )}
 
-      {/* VILLA LIST */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {villas.map((villa) => (
           <VillaCard key={villa._id} villa={villa} />

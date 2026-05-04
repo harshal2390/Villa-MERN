@@ -8,17 +8,14 @@ dotenv.config();
 
 const app = express();
 
-// ================= MIDDLEWARE =================
 app.use(cors());
 app.use(express.json());
 
-// ================= DATABASE =================
 mongoose
   .connect("mongodb://127.0.0.1:27017/villahub")
   .then(() => console.log("MongoDB Connected"))
   .catch((err) => console.log(err));
 
-// ================= MODELS =================
 const villaSchema = new mongoose.Schema({
   title: String,
   price: Number,
@@ -29,7 +26,6 @@ const villaSchema = new mongoose.Schema({
 
 const Villa = mongoose.model("Villa", villaSchema);
 
-// ================= AUTH MIDDLEWARE =================
 const verifyToken = (req, res, next) => {
   const token = req.headers.authorization;
 
@@ -44,9 +40,7 @@ const verifyToken = (req, res, next) => {
   }
 };
 
-// ================= ROUTES =================
-
-// 🔐 LOGIN
+//  LOGIN
 app.post("/login", (req, res) => {
   const { email, password } = req.body;
 
@@ -54,13 +48,14 @@ app.post("/login", (req, res) => {
     const token = jwt.sign({ email }, process.env.JWT_SECRET || "SECRET_KEY", {
       expiresIn: "1h",
     });
+    console.log(token);
     return res.json({ token });
   }
 
   res.status(401).json({ message: "Invalid credentials" });
 });
 
-// 🏡 GET ALL VILLAS
+//  GET ALL VILLAS
 app.get("/villas", verifyToken, async (req, res) => {
   try {
     const villas = await Villa.find();
@@ -70,7 +65,7 @@ app.get("/villas", verifyToken, async (req, res) => {
   }
 });
 
-// 🏡 GET SINGLE VILLA (FIXED: added auth)
+//  GET SINGLE VILLA
 app.get("/villas/:id", verifyToken, async (req, res) => {
   try {
     const villa = await Villa.findById(req.params.id);
@@ -80,7 +75,7 @@ app.get("/villas/:id", verifyToken, async (req, res) => {
   }
 });
 
-// ➕ ADD VILLA
+//  ADD VILLA
 app.post("/villas", verifyToken, async (req, res) => {
   try {
     const villa = new Villa(req.body);
@@ -91,7 +86,7 @@ app.post("/villas", verifyToken, async (req, res) => {
   }
 });
 
-// ✏️ UPDATE VILLA
+//  UPDATE VILLA
 app.put("/villas/:id", verifyToken, async (req, res) => {
   try {
     const updated = await Villa.findByIdAndUpdate(req.params.id, req.body, {
@@ -103,7 +98,7 @@ app.put("/villas/:id", verifyToken, async (req, res) => {
   }
 });
 
-// ❌ DELETE VILLA
+//  DELETE VILLA
 app.delete("/villas/:id", verifyToken, async (req, res) => {
   try {
     await Villa.findByIdAndDelete(req.params.id);
@@ -113,7 +108,6 @@ app.delete("/villas/:id", verifyToken, async (req, res) => {
   }
 });
 
-// ⚡ BULK INSERT (FIXED: added auth)
 app.post("/villas/bulk", verifyToken, async (req, res) => {
   try {
     const villas = await Villa.insertMany(req.body);

@@ -14,7 +14,6 @@ export default function EditVilla() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  // ================= FETCH SINGLE VILLA =================
   useEffect(() => {
     if (!token) return;
 
@@ -49,7 +48,6 @@ export default function EditVilla() {
     fetchVilla();
   }, [id, token, setValue]);
 
-  // ================= UPDATE =================
   const onSubmit = async (data) => {
     try {
       await API.put(`/villas/${id}`, data, {
@@ -58,7 +56,7 @@ export default function EditVilla() {
         },
       });
 
-      navigate(`/villa/${id}`); // better UX
+      navigate(`/villa/${id}`);
     } catch (err) {
       setError("Update failed");
     }
@@ -72,7 +70,6 @@ export default function EditVilla() {
     return <p className="p-6 text-red-500 text-center">{error}</p>;
   }
 
-  // ================= UI =================
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="bg-white p-8 rounded-xl shadow w-[400px]">
