@@ -108,14 +108,14 @@ app.delete("/villas/:id", verifyToken, async (req, res) => {
   }
 });
 
-app.post("/villas/bulk", verifyToken, async (req, res) => {
-  try {
-    const villas = await Villa.insertMany(req.body);
-    res.json(villas);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
+// app.post("/villas/bulk", verifyToken, async (req, res) => {
+//   try {
+//     const villas = await Villa.insertMany(req.body);
+//     res.json(villas);
+//   } catch (err) {
+//     res.status(500).json({ error: err.message });
+//   }
+// });
 
 // ================= SERVER =================
 app.listen(5000, () => console.log("Server running on port 5000"));
